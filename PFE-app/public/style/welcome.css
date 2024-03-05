@@ -1,0 +1,84 @@
+body {
+    background: url(../images/bg_eleve.png) center top repeat-x #f7f2df;
+    height:100% ;
+}
+
+ .accueil-body, .accueil-footer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.accueil-header {
+    text-align: center;
+    height: 200px;
+    width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.accueil-body {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.accueil-footer {
+    background: #f7f2df;
+    border-top: 1px solid #f7f2df;
+    padding: 12px;
+    font-size: 20px;
+    text-align: center;
+    margin-top:159px;
+}
+
+.accueil-component {
+    max-width: 450px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 20px;
+}
+
+.accueil-component:hover {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 45px, rgba(0, 0, 0, 0.22) 0px 10px 18px;
+    cursor: pointer;
+}
+.materiel-color-green {
+    background: #47d147;
+}
+.materiel-color-blue {
+    background: #1a75ff;
+}
+
+.accueil-component-icon {
+    margin: 0 auto;
+    border: 0px solid;
+    width: 150px;
+    border-radius: 50%;
+}
+
+.accueil-component-icon img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    border: 4px solid #9da7dc;
+    margin-top:10px;
+}
+
+.accueil-component-title {
+    border: 0px solid;
+    background: #eeeeee;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.accueil-component-title p {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.pull-right, .pull-left {
+    display: inline-block;
+    margin-bottom: 10px;
+}
