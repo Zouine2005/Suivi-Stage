@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             // ... autres seeders
             FormateurSeeder::class,
             DirecteurSeeder::class,
+            FiliereSeeder::class
         ]);
     }
 }

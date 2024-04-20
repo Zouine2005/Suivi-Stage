@@ -17,7 +17,9 @@ class CreateFormateursTable extends Migration
             $table->string('prenom');
             $table->string('email')->unique(); // Ajout de la colonne email
             $table->string('password'); // Ajout de la colonne password
+            $table->unsignedBigInteger('directeur_id'); // Clé étrangère
             $table->timestamps();
+            $table->foreign('directeur_id')->references('id')->on('directeurs');
         });
     }
 
