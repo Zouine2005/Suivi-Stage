@@ -11,5 +11,9 @@ class Directeur extends Authenticatable
 {
     protected $guard = 'directeur'; // Nom du gardien
     protected $fillable = ['nom', 'prenom', 'email', 'password'];
+    public function formateurs()
+    {
+        return $this->hasMany(Formateur::class);
+    }
 }
 
