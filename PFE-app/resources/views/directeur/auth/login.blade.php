@@ -276,7 +276,7 @@ footer a {
 }
     </style>
 </head>
-<body>
+<body  oncontextmenu="return false;">
 
 
    
