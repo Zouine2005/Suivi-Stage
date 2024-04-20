@@ -6,7 +6,9 @@ use App\Http\Controllers\Directeur\LoginController as DirecteurLoginController;
 use App\Http\Controllers\Formateur\LoginController as FormateurLoginController;
 use App\Http\Controllers\Formateur\HomeController as FormateurHomeController;
 use App\Http\Controllers\Directeur\HomeController as DirecteurHomeController;
-
+use App\Http\Controllers\Directeur\ProfileController as DirecteurProfileController;
+use App\Http\Controllers\FiliereApiController;
+use App\Http\Controllers\GroupeApiController;
 
 
 /*
@@ -21,21 +23,24 @@ use App\Http\Controllers\Directeur\HomeController as DirecteurHomeController;
 */
 
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+
+
+Route::get('/api/filieres/{formateurId}', [FiliereApiController::class, 'getFilieres']);
+Route::get('/api/groupes/{filiereId}', [GroupeApiController::class, 'getGroupes']);
+
+
 Route::prefix('directeur')->group(function () {
     Route::get('/login', [DirecteurLoginController::class, 'showLoginForm'])->name('directeur.login');
     Route::post('/login', [DirecteurLoginController::class, 'login']);
     Route::get('/home', [DirecteurHomeController::class, 'index'])->name('directeur.home');
+    Route::get('/events/create', [DirecteurHomeController::class, 'showEventForm'])->name('events.create_form');
+    Route::post('/events/store', [DirecteurHomeController::class, 'storeEvent'])->name('events.store');
+    Route::get('/events/{event}/edit', [DirecteurHomeController::class, 'editEvent'])->name('events.edit');
+    Route::put('/events/{event}', [DirecteurHomeController::class, 'updateEvent'])->name('events.update');
+    Route::get('/profile', [DirecteurProfileController::class, 'showProfile'])->name('directeur.profile');
+    Route::put('/directeur/update-password', [DirecteurProfileController::class, 'updatePassword'])->name('directeur.update-password'); 
+    Route::put('/profile/{directeur}', [DirecteurProfileController::class, 'update'])->name('update-profile');
     Route::post('/logout', [DirecteurLoginController::class, 'logout']);
-    // ... autres routes du directeur
 });
 
 Route::prefix('formateur')->group(function () {
