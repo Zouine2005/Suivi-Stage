@@ -23,6 +23,6 @@ class Event extends Model
     // Relationship with Groupe
     public function groupe()
     {
-        return $this->belongsTo(Groupe::class, 'id_groupe');
+        return $this->belongsTo(Groupe::class);
     }
 }
