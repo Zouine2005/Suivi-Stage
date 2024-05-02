@@ -7,8 +7,10 @@ use App\Http\Controllers\Formateur\LoginController as FormateurLoginController;
 use App\Http\Controllers\Formateur\HomeController as FormateurHomeController;
 use App\Http\Controllers\Directeur\HomeController as DirecteurHomeController;
 use App\Http\Controllers\Directeur\ProfileController as DirecteurProfileController;
+use App\Http\Controllers\Directeur\GestionController;
 use App\Http\Controllers\FiliereApiController;
 use App\Http\Controllers\GroupeApiController;
+
 
 
 /*
@@ -33,10 +35,11 @@ Route::prefix('directeur')->group(function () {
     Route::get('/login', [DirecteurLoginController::class, 'showLoginForm'])->name('directeur.login');
     Route::post('/login', [DirecteurLoginController::class, 'login']);
     Route::get('/home', [DirecteurHomeController::class, 'index'])->name('directeur.home');
-    Route::get('/events/create', [DirecteurHomeController::class, 'showEventForm'])->name('events.create_form');
-    Route::post('/events/store', [DirecteurHomeController::class, 'storeEvent'])->name('events.store');
-    Route::get('/events/{event}/edit', [DirecteurHomeController::class, 'editEvent'])->name('events.edit');
-    Route::put('/events/{event}', [DirecteurHomeController::class, 'updateEvent'])->name('events.update');
+    Route::get('/calender', [GestionController::class, 'gestion'])->name('directeur.callender');
+    Route::get('/events/create', [GestionController::class, 'showEventForm'])->name('events.create_form');
+    Route::post('/events/store', [GestionController::class, 'storeEvent'])->name('events.store');
+    Route::get('/events/{event}/edit', [GestionController::class, 'editEvent'])->name('events.edit');
+    Route::put('/events/{event}', [GestionController::class, 'updateEvent'])->name('events.update');
     Route::get('/profile', [DirecteurProfileController::class, 'showProfile'])->name('directeur.profile');
     Route::put('/directeur/update-password', [DirecteurProfileController::class, 'updatePassword'])->name('directeur.update-password'); 
     Route::put('/profile/{directeur}', [DirecteurProfileController::class, 'update'])->name('update-profile');
