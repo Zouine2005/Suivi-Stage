@@ -11,7 +11,6 @@ class FiliereApiController extends Controller
     public function getFilieres($formateurId)
     {
         $filieres = Filiere::where('id_formateur', $formateurId)->get();
-
         return response()->json($filieres);
     }
 
