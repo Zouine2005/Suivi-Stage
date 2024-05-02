@@ -3,83 +3,49 @@
 namespace App\Http\Controllers\Directeur;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Formateur;
-use App\Models\Filiere;
-use App\Models\Groupe; // Ajoutez l'importation du modèle Groupe
 use App\Models\Event;
+use App\Models\Filiere;
+use App\Models\Groupe;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $formateurs = Formateur::all();
-        $filieres = Filiere::all();
-
-        $ev = [];
-        $events = Event::all();
+        // Récupérer tous les événements avec les détails de la filière et du groupe
+        $events = Event::with('filiere', 'groupe')->get();
+    
+        // Organiser les événements par filière et groupe
+        $data = [];
+    
+        // Parcourir tous les événements
         foreach ($events as $event) {
-            $ev[] = [
-                'id' => $event->id,
-                'title' => $event->title,
-                'start' => $event->start_date,
-                'end' => $event->end_date,
-            ];
+            // Accéder aux propriétés de la filière et du groupe
+            $filiere_id = $event->filiere_id;
+            $filiere_nom = Filiere::find($filiere_id)->nom ?? 'Filière inconnue';
+            
+            $groupe_id = $event->id_groupe;
+            $groupe_nom = Groupe::find($groupe_id)->nom ?? 'Groupe inconnu';
+
+            // Calculer la durée en jours
+            $duree = $this->calculateDuration($event->start_date, $event->end_date);
+            
+            // Ajouter la durée au groupe correspondant dans les données de la filière
+            if (!isset($data[$filiere_nom])) {
+                $data[$filiere_nom] = [];
+            }
+            $data[$filiere_nom][$groupe_nom] = $duree;
         }
-        return view('directeur.home', ['events' => $ev],['formateurs'=>$formateurs]);
-    }
-
-    public function showEventForm()
-    {
-        $formateurs = Formateur::all();
-        $filieres = Filiere::all();
-        $groupes = Groupe::all(); // Récupérer tous les groupes disponibles
-
-        return view('events.create', compact('formateurs', 'filieres', 'groupes'));
-    }
-
-    public function storeEvent(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'formateur_id' => 'required',
-            'filiere_id' => 'required',
-            'id_groupe' => 'required', // Ajoutez la validation pour le groupe
-        ]);
-
-        Event::create($validatedData);
-
-        return redirect()->route('directeur.home')->with('success', 'Event created successfully!');
-    }
-
-    public function editEvent(Event $event)
-    {
-        $formateurs = Formateur::all();
-        $filieres = Filiere::all();
-        $groupes = Groupe::all(); // Récupérer tous les groupes disponibles
-        return view('events.edit', compact('event', 'formateurs', 'filieres', 'groupes'));
-    }
-
-    public function updateEvent(Request $request, Event $event)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-            'formateur_id' => 'required',
-            'filiere_id' => 'required',
-            'id_groupe' => 'required', // Ajoutez la validation pour le groupe
-        ]);
-
-        $event->update($validatedData);
-
-        return redirect()->route('directeur.home')->with('success', 'Événement mis à jour avec succès');
-    }
-
-
-
     
+        // Passer les données à la vue
+        return view('directeur.home', ['data' => $data]);
+    }
     
+    // Fonction pour calculer la durée en jours entre deux dates
+    private function calculateDuration($start_date, $end_date)
+    {
+        $start = strtotime($start_date);
+        $end = strtotime($end_date);
+        $diff = $end - $start;
+        return round($diff / (60 * 60 * 24)); // Convertir la différence en jours
+    }
 }
