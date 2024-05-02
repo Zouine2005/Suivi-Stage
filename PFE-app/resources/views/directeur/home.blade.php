@@ -1,42 +1,71 @@
 @include('layouts.main')
-<body> 
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="col-md-11 offset-1 mt-3 mb-3">
-          <div id="calendar" class="col-12"></div>
-        </div>
-      </div>
-    </div> 
-  </div>
 
-  <script>
-    $(document).ready(function(){
-      var events = @json($events); 
+<body>
+    <h1>La situation des Stages de chaque Filière</h1>
+    <table id="container"class="charts-css column data-spacing-10"></table>
 
-      events.forEach(function(event, index) {
-        var colors = ['SteelBlue', 'LightSeaGreen', 'SlateGray']; 
-        event.color = colors[index % colors.length]; 
-      });
-
-      $('#calendar').fullCalendar({
-        header:{
-          left:'prev,next today',
-          center:'title',
-          right:'month,agendaWeek,agendaDay' 
-        },
-        events: events,
-        selectable: true,
-        selectHelper: true,
-        select: function(start, end, allDays){
-          var startDate = moment(start).format('YYYY-MM-DD');
-          window.location.href = '{{ route("events.create_form") }}?start_date=' + startDate;
-        },
-        eventClick: function (calEvent, jsEvent, view) {
-          window.location.href = '{{ route("events.edit", ":event_id") }}'.replace(':event_id', calEvent.id);
+    <style>
+        
+        #container {
+            width: 100%;
         }
-      });
-    });
-  </script>
+       
+    </style>
+
+    <script>
+        // Données du diagramme
+        var data = {!! json_encode($data) !!};
+
+        // Convertir les données en un format approprié pour Highcharts
+        var seriesData = [];
+        for (var filiere in data) {
+            var groupeData = [];
+            for (var groupe in data[filiere]) {
+                // Assurez-vous que les valeurs 'y' représentent la durée en jours
+                var dureeEnJours = data[filiere][groupe];
+                groupeData.push({
+                    name: groupe,
+                    y: dureeEnJours
+                });
+            }
+            seriesData.push({
+                name: filiere,
+                data: groupeData
+            });
+        }
+
+        // Créer le diagramme à colonnes avec Highcharts
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Votre diagramme'
+            },
+            xAxis: {
+                type: 'category',
+                title: {
+                    text: 'Filière'
+                },
+                labels: {
+                    rotation: -45,
+                    style: {
+                        fontSize: '12px',
+                        fontFamily: 'Arial, sans-serif'
+                    }
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Durée de Stage (en jours)'
+                }
+            },
+            legend: {
+                enabled: true
+            },
+            series: seriesData
+        });
+    </script>
 </body>
+
 </html>
