@@ -41,5 +41,14 @@ class FormateurSeeder extends Seeder
             'password' => bcrypt('motdepasse3'),
             'directeur_id' => $directeur_id,
         ]);
+
+        \App\Models\Formateur::create([
+            'matricule' => 'CER15',
+            'nom' => 'Allali',
+            'prenom' => 'Mohamed', 
+            'email' => 'formateur4@example.com',
+            'password' => bcrypt('motdepasse4'),
+            'directeur_id' => $directeur_id,
+        ]);
     }
 }
