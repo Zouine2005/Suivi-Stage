@@ -50,6 +50,7 @@ Route::prefix('formateur')->group(function () {
     Route::get('/login', [FormateurLoginController::class, 'showLoginForm'])->name('formateur.login');
     Route::post('/login', [FormateurLoginController::class, 'login']);
     Route::get('/home', [FormateurHomeController::class, 'index'])->name('formateur.home');
+    Route::get('/message', [FormateurHomeController::class, 'verifierStage'])->name('formateur.message'); // Utiliser post() pour les actions qui modifient les données
     Route::post('/logout', [FormateurLoginController::class, 'logout']);
     // ... autres routes du formateur
 });
