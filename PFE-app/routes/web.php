@@ -5,13 +5,13 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Directeur\LoginController as DirecteurLoginController;
 use App\Http\Controllers\Formateur\LoginController as FormateurLoginController;
 use App\Http\Controllers\Formateur\HomeController as FormateurHomeController;
+use App\Http\Controllers\Formateur\RemplirInfo as FormateurRemlirInfo;
 use App\Http\Controllers\Directeur\HomeController as DirecteurHomeController;
 use App\Http\Controllers\Directeur\ProfileController as DirecteurProfileController;
 use App\Http\Controllers\Directeur\GestionController;
 use App\Http\Controllers\FiliereApiController;
 use App\Http\Controllers\GroupeApiController;
-
-
+//use App\Http\Controllers\Formateur\remplirInfo;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +50,8 @@ Route::prefix('formateur')->group(function () {
     Route::get('/login', [FormateurLoginController::class, 'showLoginForm'])->name('formateur.login');
     Route::post('/login', [FormateurLoginController::class, 'login']);
     Route::get('/home', [FormateurHomeController::class, 'index'])->name('formateur.home');
-    Route::get('/message', [FormateurHomeController::class, 'verifierStage'])->name('formateur.message'); // Utiliser post() pour les actions qui modifient les données
+    //Route::get('/message', [FormateurHomeController::class, 'verifierStage'])->name('formateur.message'); 
+    Route::get('/formulaire', [FormateurRemlirInfo::class, 'remplir'])->name('formateur.formulaire'); 
     Route::post('/logout', [FormateurLoginController::class, 'logout']);
     // ... autres routes du formateur
 });
